@@ -96,6 +96,15 @@ routa.
     {
 ```
 
+## Vytváření odkazů
+
+Odkazy vytváříme na pojmenované routy v anotacích. Používáme je i k odkazům na CSS a JS.
+
+```sh
+        <link rel="stylesheet" href="{{ url('homepage') }}layouts/{{ layout }}/css/bootstrap.css">
+        <a class="dropdown-item" href="{{ path('homepage', {_locale: 'de'}) }}">Deuche</a>
+```
+
 ## Šablonovací systém "Twig"
 
 Šablony jsou v adresáři templates a pojmenování má formát nazevsablony.html.twig.
