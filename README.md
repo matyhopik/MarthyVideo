@@ -77,7 +77,7 @@ ze souboru docker-compose.yml vč. jména root a hesla.
 mysqldb
 ```
 Neukládejte na Gitlab soubory DB, pouze sql dump. Jedná se o adresář ./data/database, který musí zůstat
-git ignore.
+git ignore. 
 
 ## Konfigurace routování
 
@@ -104,6 +104,11 @@ Když je šablona v podadresáří, voláme nazevadresare.nazevsablony.html.twig
 dědění layoutové šablony:
 ```sh
 {% extends 'base.html.twig' %}
+```
+
+Include - načtení externí šablony
+```sh
+{% include 'navbar.html.twig' %}
 ```
 
 označení bloku html contentu, co se includuje podle příslušné akce controlleru do layoutu:
@@ -211,12 +216,12 @@ Vytvoří tabulky v DB
 ```sh
 php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entity
 ```
-Prvním krokem k vytvoření tříd entit z existující databáze je požádat Doctrine, aby
-si databázi prohlédla a vygenerovala odpovídající soubory metadat.
+Prvním krokem k vytvoření tříd entit z existující databáze je požádat Doctrine, aby 
+si databázi prohlédla a vygenerovala odpovídající soubory metadat. 
 Soubory metadat popisují třídu entity, která se má generovat na základě polí tabulky.
 
-Tento nástroj příkazového řádku žádá Doctrinu, aby prozkoumala databázi a vygenerovala
-nové třídy PHP s metadaty anotací do src/Entity. Tím se vygenerují dva soubory:
+Tento nástroj příkazového řádku žádá Doctrinu, aby prozkoumala databázi a vygenerovala 
+nové třídy PHP s metadaty anotací do src/Entity. Tím se vygenerují dva soubory: 
 BlogPost.phpa BlogComment.php.
 
 #### úpravy existujících entit
@@ -273,7 +278,7 @@ V metodě "build" provedeme úprqvy.
 
 #### Příklad vygenerovaného formulářového elementu:
 
-Můžeme v jednotlivých elementech nastavovat např. required, class pro stylování,
+Můžeme v jednotlivých elementech nastavovat např. required, class pro stylování, 
 validaci elementu a počet znaků, které je možné do elementu vyplnit. Název elementu
 nebo typ. Náš vzorový element se jmenuje "street", a je typ "Textarea".
 
@@ -287,7 +292,7 @@ nebo typ. Náš vzorový element se jmenuje "street", a je typ "Textarea".
 
 ##### Příklad manuální úpravy formulářů:
 
-U formulářů můžeme např. nastavit i třidy css pro html, omezit počet znaků v elementu a
+U formulářů můžeme např. nastavit i třidy css pro html, omezit počet znaků v elementu a 
 vypnout nebo zapnout validaci.
 
 ```sh
