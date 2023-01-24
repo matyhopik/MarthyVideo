@@ -1,4 +1,4 @@
-FROM php:8.0-apache AS symfony_web
+FROM php:8.0-apache AS symfony_pohoda_web
 
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y \

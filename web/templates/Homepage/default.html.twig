@@ -3,7 +3,12 @@
 {% block body %}
     <div class="row">
         <div class="col-lg-12">
-            Homepage default
+            {% for human in humans %}
+                {{ human.id }}
+                {{ human.name }}
+                {{ human.age }}
+                <br>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

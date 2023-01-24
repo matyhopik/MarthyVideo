@@ -714,11 +714,5 @@ class Filesystem
         }
     }
 
-    /**
-     * @internal
-     */
-    public static function handleError(int $type, string $msg)
-    {
-        self::$lastError = $msg;
-    }
+0
 }
