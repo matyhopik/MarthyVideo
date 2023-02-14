@@ -4701,6 +4701,7 @@ return array(
     'Twig\\Extension\\CoreExtension' => $vendorDir . '/twig/twig/src/Extension/CoreExtension.php',
     'Twig\\Extension\\DebugExtension' => $vendorDir . '/twig/twig/src/Extension/DebugExtension.php',
     'Twig\\Extension\\EscaperExtension' => $vendorDir . '/twig/twig/src/Extension/EscaperExtension.php',
+    'Twig\\Extension\\ZipExtension' => $vendorDir . '/twig/twig/src/Extension/ZipExtension.php',
     'Twig\\Extension\\ExtensionInterface' => $vendorDir . '/twig/twig/src/Extension/ExtensionInterface.php',
     'Twig\\Extension\\GlobalsInterface' => $vendorDir . '/twig/twig/src/Extension/GlobalsInterface.php',
     'Twig\\Extension\\OptimizerExtension' => $vendorDir . '/twig/twig/src/Extension/OptimizerExtension.php',

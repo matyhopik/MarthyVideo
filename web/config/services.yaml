@@ -7,6 +7,7 @@ parameters:
     mailto: tatar.pavel@seznam.cz
 
     lang: ['cs','de','en']
+    layout: 'MarthyVideo'
 
 services:
     # default configuration for services in *this* file

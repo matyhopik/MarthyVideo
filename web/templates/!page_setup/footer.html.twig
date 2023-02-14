@@ -1,0 +1,19 @@
+<footer class="primary-footer / bg-neutral-800 display-flex align-items-center">
+    <img class="primary-footer__logo / margin-left-700" src="{{ url("marthy_default") }}/layouts/{{ layout }}/img/logo.png" alt="Marthypyro logo">
+    <nav class="primary-footer__nav / margin-left-900" aria-label="Secondary">
+        <ul class="primary-footer__nav-list" role="list">
+            {% for category in categories %}
+                {% if category.parentId == NULL %}
+                    <li>
+                        <a href="{{ path('marthy_default', {'categoryUrl': category.urlName}) }}">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="primary-footer__author / padding-400 fs-100 text-neutral-400">
+        <p>Made by Matěj Hopp</p>
+    </div>
+</footer>

@@ -1,0 +1,8 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".filter-box__name").click(function(){
+            $(this).next(".filter-box__parameter").slideToggle();
+            $(this).find("svg").toggleClass("fa-angle-right fa-angle-down");
+        });
+    });
+</script>

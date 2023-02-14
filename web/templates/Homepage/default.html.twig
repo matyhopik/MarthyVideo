@@ -1,17 +1,64 @@
-{% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="row">
-        <div class="col-lg-12">
-            {% for human in humans %}
-                {{ human.id }}
-                {{ human.name }}
-                {{ human.age }}
-                <br>
+    <div>
+        <ul style="list-style: none">
+            {% for category in categories  %}
+                <li>
+                    {% if category.parentId == NULL %}
+                        <div style="background-color: purple;"><a style="color: black" href="">{{ category.name }}</a></div>
+                        {% for cat in categories %}
+                            {% if cat.parentId == category.id %}
+                                <div style="background-color: red"><a href="">-----{{ cat.name }}</a></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
-{% endblock %}
+    <table style="border: #0a0a0a 3px solid">
+        <tr style="border: #0a0a0a 1px solid">
+            <th style="border: #0a0a0a 1px solid">ID</th>
+            <th style="border: #0a0a0a 1px solid">Code</th>
+            <th style="border: #0a0a0a 1px solid">Name</th>
+            <th style="border: #0a0a0a 1px solid">Description</th>
+            <th style="border: #0a0a0a 1px solid">Picture</th>
+            <th style="border: #0a0a0a 1px solid">Stock (Dostupné/Sklad)</th>
+            <th style="border: #0a0a0a 1px solid">Parametry</th>
+            <th style="border: #0a0a0a 1px solid">Kategorie</th>
+        </tr>
+    {% for product in products %}
+        <tr style="border: #0a0a0a 1px solid">
+            <td style="border: #0a0a0a 1px solid">{{ product.id }}</td>
+            <td style="border: #0a0a0a 1px solid">{{ product.code }}</td>
+            <td style="border: #0a0a0a 1px solid">{{ product.name }}</td>
+            <td style="border: #0a0a0a 1px solid">{{ product.description }}</td>
+            <td style="border: #0a0a0a 1px solid">{{ product.pictureUrl }}</td>
+            <td style="border: #0a0a0a 1px solid">{{ product.inStock - product.inReservation }}/{{ product.inStock }}</td>
+            <td style="border: #0a0a0a 1px solid">
+            {% for parameter in parameters  %}
+                {% for id in product.parameterId %}
+                    {% if parameter.id == id %}
+                        {{ parameter.name}}: {{ product.parameterValue[loop.index0] }}<br>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </td>
+            <td style="border: #0a0a0a 1px solid">
+                {% for category in categories  %}
+                    {% for id in product.categoryId %}
+                        {% if category.id == id %}
+                            {% if category.parentId == NULL %}
+                                <b>Parent: {{ category.name }}</b>
+                            {% else %}
+                                <span style="color: red">{{ category.name }}</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
 
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}{% endblock %}

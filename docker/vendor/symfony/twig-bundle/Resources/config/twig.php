@@ -48,6 +48,7 @@ use Twig\Profiler\Profile;
 use Twig\RuntimeLoader\ContainerRuntimeLoader;
 use Twig\Template;
 use Twig\TemplateWrapper;
+use ZipExtension;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
@@ -64,6 +65,7 @@ return static function (ContainerConfigurator $container) {
             ->tag('container.preload', ['class' => ExtensionSet::class])
             ->tag('container.preload', ['class' => Template::class])
             ->tag('container.preload', ['class' => TemplateWrapper::class])
+            ->tag('container.preload', ['class' => ZipExtension::class])
 
         ->alias('Twig_Environment', 'twig')
         ->alias(Environment::class, 'twig')

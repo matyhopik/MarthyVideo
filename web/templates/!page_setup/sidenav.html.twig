@@ -1,0 +1,120 @@
+<aside>
+    <nav class="category-wrapper / bg-neutral-800" aria-label="Primary">
+        <ul class="category-list" role="list">
+            {% set break = false %}
+            {% for category in categories %}
+                {% if category.parentId == NULL %}
+                    <li class="category">
+                        <a href="{{ path('marthy_default', {'categoryUrl': category.urlName}) }}">
+                            {{ category.name }}
+                            {% for cat in categories %}
+                                {% if not break %}
+                                    {% if cat.parentId == category.id %}
+                                        <i{% if category.urlName == currentUrl or cat.parentId in currentUrl %}
+                                            class="fa-solid fa-angle-right rotate"
+                                        {% else %}
+                                            class="fa-solid fa-angle-right"
+                                        {% endif %}></i>
+                                        {% set break = true %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if break == false %}
+                                <i class="fa-solid fa-circle"></i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <div class="subcat">
+                        {% for cat in categories %}
+                            {% if cat.parentId == category.id %}
+                                <li class="subcategory"
+                                        {% if category.urlName == currentUrl or cat.parentId in currentUrl %}
+                                            style="display: block;"
+                                            active="true"
+                                        {% else %}
+                                            style="display: none;"
+                                            active="false"
+                                        {% endif %}>
+                                    <a class="subcategory-link" href="{{ path('marthy_default', {'categoryUrl': cat.urlName}) }}">
+                                        <i class="fa-solid fa-circle"></i>
+                                        {{ cat.name }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% set break = false %}
+            {% endfor %}
+        </ul>
+    </nav>
+
+    {% if currentUrl != "" %}
+        <section class="filter / margin-top-500">
+            <h4 class="text-primary-400 margin-left-400 fs-500 padding-bottom-400">Filtry</h4>
+            <div class="filter-wrapper / margin-left-500">
+                {% for items in paramInCategory %}
+                    {% for key, item in items %}
+                        {% if key == categoryId %}
+                            {% for parameter in parameters %}
+                                {% if parameter.id == item %}
+                                    <div class="filter-box">
+                                        <div class="filter-box__name">
+                                            <p>{{ parameter.name }}</p>
+                                            <i id="param-button" class="fa-solid fa-angle-right"></i>
+                                        </div>
+                                        <div class="filter-box__parameter" style="display: none">
+                                            <ul role="list">
+                                                {% set processed = [] %}
+                                                {% set videoProcessed = [] %}
+                                                {% set count = 1 %}
+                                                {% for parameterKey, parameterValue in parameterValues %}
+                                                    {% for paramKey, paramCount in parameterValue %}
+                                                        {% if parameter.id == parameterKey %}
+                                                            {% if parameterKey == 15 %}
+                                                                {% if parameterKey not in videoProcessed %}
+                                                                    {% for test in parameterValue %}
+                                                                        {% set count = count + 1 %}
+                                                                    {% endfor %}
+                                                                    {% set videoProcessed = videoProcessed|merge([parameterKey]) %}
+                                                                    <li>
+                                                                        <input id="{{ parameterKey }}" type="checkbox">
+                                                                        <label for="{{ parameterKey }}">
+                                                                            {% set paramKey = "Ano" %}
+                                                                            {{ paramKey }} ({{ count }})
+                                                                        </label>
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                {% if paramKey not in processed %}
+                                                                    {% set processed = processed|merge([paramKey]) %}
+                                                                {% endif %}
+                                                                <li>
+                                                                    <input id="{{ paramKey ~ parameterKey }}" type="checkbox">
+                                                                    <label for="{{ paramKey ~ parameterKey }}">
+                                                                        {% if paramKey == "false" %}
+                                                                            {% set paramKey = "Ne" %}
+                                                                        {% elseif paramKey == "true" %}
+                                                                            {% set paramKey = "Ano" %}
+                                                                        {% elseif parameterKey == 6 or parameterKey == 10 %}
+                                                                            {% set paramKey = paramKey|number_format(0) %}
+                                                                        {% endif %}
+                                                                        {{ paramKey }} ({{ paramCount }})
+                                                                    </label>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</aside>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarthyVideo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url("marthy_default") }}/layouts/{{ layout }}/css/style.css">
+    <script src="https://kit.fontawesome.com/1b2c072852.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body class="background">
+
+    <div class="container">
+        <div class="page">
+
+            {% include "!page_setup/header.html.twig" %}
+
+            <main class="content / bg-neutral-700">
+
+                {% include "!page_setup/sidenav.html.twig" %}
+
+                {% block content %}
+                {% endblock %}
+
+            </main>
+
+            {% include "!page_setup/footer.html.twig" %}
+
+        </div>
+    </div>
+    {% include "!page_setup/js.html.twig" %}
+</body>
+</html>

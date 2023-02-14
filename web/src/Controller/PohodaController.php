@@ -2,9 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Human;
+use App\Entity\Parameter;
+use App\Entity\Product;
+use App\Repository\ProductRepository;
+use App\Service\PohodaManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\ManagerRegistry;
+use SimpleXMLElement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,48 +24,50 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use XMLReader;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class PohodaController extends AbstractController
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ManagerRegistry $doctrine)
     {
-        $this->em = $em;
+        $this->em = $doctrine->getManager();
     }
-
     /**
      * @return Response
-     * @Route("/", name="homepage_default")
+     * @Route("/a", name="homepage_default")
+     * @throws \Exception
      */
-    public function default(): Response
+    public function default(ManagerRegistry $doctrine): Response
     {
-        // Vytahnuti xml souboru
-        $fs = new Filesystem();
-        $filePath = 'test.xml';
+        $stock = 0;
+        $paramIds = 0;
 
-        if (!$fs->exists($filePath)) {
-            throw new Exception('Xml file not found');
-        }
+        $categoryPath = 'PohodaXML/categories.xml';
+        $parameterPath = 'PohodaXML/parameters.xml';
+        $productPath = 'PohodaXML/products.xml';
 
-        $xml = simplexml_load_file($filePath);
 
-        $array = json_decode(json_encode($xml), true);
-        $object = $array['HumanGroup']['Human'];
+        $pohoda = new PohodaManager($doctrine);
+        //$pohoda->getCategoryXml($categoryPath);
+        //$pohoda->getParametersXml($parameterPath);
+        //$pohoda->getProductXml($productPath);
 
-        foreach($object as $item){
-            $entity = new Human();
-            $entity->setName($item['name']);
-            $entity->setAge($item['age']);
-            // ...
-            $this->em->persist($entity);
-        }
-        //$this->em->flush();
+        $productRepository = $this->em->getRepository(Product::class);
+        $parameterRepository = $this->em->getRepository(Parameter::class);
+        $categoryRepository = $this->em->getRepository(Category::class);
 
-        $human = $this->em->getRepository(Human::class)->findAll();
+        $products = $productRepository->findAll();
+        $parameter = $parameterRepository->findAll();
+        $category = $categoryRepository->findAll();
+
+
 
         return $this->render("Homepage/default.html.twig", [
-            'humans' => $human
-        ]);
+            'products' => $products,
+            'stocks' => $stock,
+            'parameters' => $parameter,
+            'categories' => $category,
+            ]);
     }
 }

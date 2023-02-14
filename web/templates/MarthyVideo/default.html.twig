@@ -1,0 +1,176 @@
+{% extends 'marthyvideo.html.twig' %}
+
+{% block content %}
+    <section class="product-content">
+
+        {% if productId != NULL %}
+            <section class="video">
+                {% for parameterDetail in parameterDetails %}
+                    {% for parameterId, parameterValue in parameterDetail %}
+                        {% if parameterId == 15 %}
+                            {% set ytbEmbed = parameterValue|replace({'watch?v=': 'embed/', 'watch?app=desktop?v=': 'embed/', '&': '?'}) %}
+                            <iframe class="video-ytb" src="{{ ytbEmbed }}" allowfullscreen></iframe>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </section>
+
+            <section class="product-detail / margin-right-500">
+                <img class="margin-600" src="{{ url("marthy_default") }}/layouts/{{ layout }}/img/test.png" alt="product-img">
+                <div class="product-detail__main-info / margin-block-600">
+                    <h2 class="fs-600 fw-semi-bold">{{ productDetails.name }}</h2>
+                    <p class="fs-200 padding-inline-400 padding-block-200 margin-top-400">{{ productDetails.description }}</p>
+                    <div class="main-info-instock / display-flex padding-inline-400">
+                        <div class="instock-wrapper / display-flex align-items-center" style="--gap: 0.5rem">
+                            <p class="fs-300">Na skladě:</p>
+                            <div class="instock-box" state="instock">
+                                <p>{{ productDetails.inStock }}</p>
+                            </div>
+                        </div>
+                        <div class="instock-wrapper / display-flex align-items-center" style="--gap: 0.5rem">
+                            <p class="fs-300">V rezervaci:</p>
+                            <div class="instock-box" state="inreservation">
+                                <p>{{ productDetails.inReservation }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-detail__parameters / margin-top-700">
+                    <ul class="parameters-list" role="list">
+                        {% for parameterDetail in parameterDetails %}
+                            {% for parameterId, parameterValue in parameterDetail %}
+                                {% if parameterId != 15 %}
+                                    <li class="parameter">
+                                        <span class="parameter-text">
+                                            {% for parameter in parameters %}
+                                                {% if parameter.id == parameterId %}
+                                                    {{ parameter.name }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                        <span class="parameter-value">
+                                            {% if parameterValue == "false" %}
+                                                {% set parameterValue = "Ne" %}
+                                            {% elseif parameterValue == "true" %}
+                                                {% set parameterValue = "Ano" %}
+                                            {% elseif parameterId == 6 or parameterId == 10 %}
+                                                {% set parameterValue = parameterValue|number_format(0) %}
+                                            {% endif %}
+                                            {{ parameterValue }}
+                                        </span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        {% endif %}
+
+        <section class="products">
+            {% if currentUrl == "" %}
+                <section class="last-shown">
+                    <h3 class="products-border-top fs-600 fw-semi-bold padding-left-400 margin-bottom-300">
+                        Poslední zobrazené
+                    </h3>
+                    <ul class="last-shown-list / margin-left-500 padding-right-900" role="list">
+                        {% for arrayKey, arrayValue in productsLatestArray|reverse %}
+                            {% for key, product in productsLatest|reverse %}
+                                {% if arrayValue == product.id %}
+                                    <li class="last-shown-item / display-flex align-items-center margin-bottom-400">
+                                        <span class="fw-medium fs-300 text-align-right text-neutral-400">{{ arrayKey + 1 }}.</span>
+                                        <a href="{{ path('marthy_default', {'categoryUrl': product.id}) }}">
+                                            <img class="last-shown-img" src="{{ url("marthy_default") }}/layouts/{{ layout }}/img/test.png" alt="productImg">
+                                        </a>
+                                        <a class="last-shown-link / text-neutral-100 fs-300 fw-medium" href="{{ path('marthy_default', {'categoryUrl': product.id}) }}">
+                                            {{ product.name }}
+                                        </a>
+                                        <div class="instock-box" state="instock">
+                                            <p>{{ product.InStock }}</p>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% elseif productId != "" %}
+                <h2 class="fs-600 fw-semi-bold padding-left-400 margin-bottom-500">
+                    {{ categoryTitle }}
+                </h2>
+            {% else %}
+                <h2 class="products-border-top fs-600 fw-semi-bold padding-left-400 margin-bottom-500">
+                    {{ categoryTitle }}
+                </h2>
+            {% endif %}
+            {% if currentUrl != "" %}
+                <div class="products-grid / padding-left-800 padding-right-900">
+                    {% for product in products %}
+                        <div class="product">
+                            <a class="product-img-link / bg-neutral-100" href="{{ path('marthy_default', {'categoryUrl': currentUrl, 'productId': product.id}) }}">
+                                <img class="product-img" src="{{ url("marthy_default") }}/layouts/{{ layout }}/img/test.png" alt="productImg">
+                            </a>
+                            <div class="product-title / text-align-center padding-inline-400 margin-top-200 margin-bottom-300">
+                                <a class="text-primary-400 fs-500" href="{{ path('marthy_default', {'categoryUrl': currentUrl, 'productId': product.id}) }}">
+                                    {{ product.name }}
+                                </a>
+                            </div>
+                            <p class="product-description / padding-inline-200 text-align-center fs-200">{{ product.description|length > 48 ? product.description|slice(0, 48) ~ '...' : product.description }}</p>
+                            <div class="product-info / padding-inline-400 display-flex align-items-center justify-content-end">
+                                {% for paramVideo in product.parameterId %}
+                                    {% if paramVideo == 15 %}
+                                        <i class="fa-solid fa-video"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if product.InStock != 0 and product.InStock > 0 %}
+                                    <div class="instock-box" state="instock">
+                                        <p>{{ product.InStock }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="products-grid / padding-left-800 padding-right-900">
+                    {% for arrayKey, arrayValue in productsLatestArray|reverse %}
+                        {% for key, product in productsLatest|reverse %}
+                            {% if arrayValue == product.id %}
+                                <div class="product">
+                                    <a class="product-img-link / bg-neutral-100" href="{{ path('marthy_default', {'categoryUrl': product.id}) }}">
+                                        <img class="product-img" src="{{ url("marthy_default") }}/layouts/{{ layout }}/img/test.png" alt="productImg">
+                                    </a>
+                                    <div class="product-title / text-align-center padding-inline-400 margin-top-200 margin-bottom-300">
+                                        <a class="text-primary-400 fs-500" href="{{ path('marthy_default', {'categoryUrl': product.id}) }}">
+                                            {{ product.name }}
+                                        </a>
+                                    </div>
+                                    <p class="product-description / padding-inline-200 text-align-center fs-200">{{ product.description|length > 48 ? product.description|slice(0, 48) ~ '...' : product.description }}</p>
+                                    <div class="product-info / padding-inline-400 display-flex align-items-center justify-content-end">
+                                        {% for paramVideo in product.parameterId %}
+                                            {% if paramVideo == 15 %}
+                                                <i class="fa-solid fa-video"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if product.InStock != 0 and product.InStock > 0 %}
+                                            <div class="instock-box" state="instock">
+                                                <p>{{ product.InStock }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if currentUrl != "" %}
+                <button id="load-more-button">Load More Products</button>
+            {% endif %}
+        </section>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+{% block javascripts %}{% endblock %}
+

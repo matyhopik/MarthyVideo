@@ -40,4 +40,3 @@ services:
       - ./data/database:/var/lib/mysql
       - ./docker/mysql/mariadb.cnf:/etc/mysql/mariadb.cnf
 
-
